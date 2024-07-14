@@ -10,7 +10,6 @@ import com.lld.im.common.enums.DelFlagEnum;
 import com.lld.im.common.enums.UserErrorCode;
 import com.lld.im.common.enums.command.UserEventCommand;
 import com.lld.im.common.exception.ApplicationException;
-import com.lld.im.service.group.service.ImGroupService;
 import com.lld.im.service.user.dao.ImUserDataEntity;
 import com.lld.im.service.user.dao.mapper.ImUserDataMapper;
 import com.lld.im.service.user.model.req.*;
@@ -52,9 +51,6 @@ public class ImUserviceImpl implements ImUserService {
 
     @Autowired
     StringRedisTemplate stringRedisTemplate;
-
-    @Autowired
-    ImGroupService imGroupService;
 
     @Override
     public ResponseVO importUser(ImportUserReq req) {
@@ -201,13 +197,5 @@ public class ImUserviceImpl implements ImUserService {
     @Override
     public ResponseVO login(LoginReq req) {
         return ResponseVO.successResponse();
-    }
-
-    @Override
-    public ResponseVO getUserSequence(GetUserSequenceReq req) {
-        Map<Object, Object> map = stringRedisTemplate.opsForHash().entries(req.getAppId() + ":" + Constants.RedisConstants.SeqPrefix + ":" + req.getUserId());
-        Long groupSeq = imGroupService.getUserGroupMaxSeq(req.getUserId(),req.getAppId());
-        map.put(Constants.SeqConstants.Group,groupSeq);
-        return ResponseVO.successResponse(map);
     }
 }

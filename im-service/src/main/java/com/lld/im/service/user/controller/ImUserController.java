@@ -78,13 +78,6 @@ public class ImUserController {
         return ResponseVO.errorResponse();
     }
 
-    @RequestMapping("/getUserSequence")
-    public ResponseVO getUserSequence(@RequestBody @Validated
-                                              GetUserSequenceReq req, Integer appId) {
-        req.setAppId(appId);
-        return imUserService.getUserSequence(req);
-    }
-
     @RequestMapping("/subscribeUserOnlineStatus")
     public ResponseVO subscribeUserOnlineStatus(@RequestBody @Validated
                                                         SubscribeUserOnlineStatusReq req, Integer appId,String identifier) {

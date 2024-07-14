@@ -5,7 +5,6 @@ import com.lld.im.common.model.SyncReq;
 import com.lld.im.service.conversation.model.DeleteConversationReq;
 import com.lld.im.service.conversation.model.UpdateConversationReq;
 import com.lld.im.service.conversation.service.ConversationService;
-import com.lld.im.service.group.model.req.ImportGroupReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
