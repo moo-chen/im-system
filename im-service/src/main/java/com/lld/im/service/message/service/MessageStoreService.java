@@ -7,6 +7,8 @@ import com.lld.im.common.enums.ConversationTypeEnum;
 import com.lld.im.common.enums.DelFlagEnum;
 import com.lld.im.common.model.message.*;
 import com.lld.im.service.conversation.service.ConversationService;
+import com.lld.im.service.group.dao.ImGroupMessageHistoryEntity;
+import com.lld.im.service.group.dao.mapper.ImGroupMessageHistoryMapper;
 import com.lld.im.service.message.dao.ImMessageBodyEntity;
 import com.lld.im.service.message.dao.ImMessageHistoryEntity;
 import com.lld.im.service.message.dao.mapper.ImMessageBodyMapper;
@@ -41,6 +43,9 @@ public class MessageStoreService {
 
     @Autowired
     SnowflakeIdWorker snowflakeIdWorker;
+
+    @Autowired
+    ImGroupMessageHistoryMapper imGroupMessageHistoryMapper;
 
     @Autowired
     RabbitTemplate rabbitTemplate;
@@ -117,6 +122,16 @@ public class MessageStoreService {
                 "",
                 JSONObject.toJSONString(dto));
         messageContent.setMessageKey(imMessageBody.getMessageKey());
+    }
+
+    private ImGroupMessageHistoryEntity extractToGroupMessageHistory(GroupChatMessageContent
+                                                                     messageContent ,ImMessageBodyEntity messageBodyEntity){
+        ImGroupMessageHistoryEntity result = new ImGroupMessageHistoryEntity();
+        BeanUtils.copyProperties(messageContent,result);
+        result.setGroupId(messageContent.getGroupId());
+        result.setMessageKey(messageBodyEntity.getMessageKey());
+        result.setCreateTime(System.currentTimeMillis());
+        return result;
     }
 
     public void setMessageFromMessageIdCache(Integer appId,String messageId,Object messageContent){
